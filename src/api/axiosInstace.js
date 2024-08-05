@@ -22,12 +22,12 @@ const attachToken = (req, tokenName) => {
     return req;
 };
 
-export const userAxiosInstance = createAxiosInstance(userBaseURL);
-userAxiosInstance.interceptors.request.use(async (req) => {
+export const axiosInstance = createAxiosInstance(userBaseURL);
+axiosInstance.interceptors.request.use(async (req) => {
     const modifiedReq = attachToken(req, 'usertoken');
     return modifiedReq;
 });
-userAxiosInstance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => handleAxiosError(error, 'user'),
 );

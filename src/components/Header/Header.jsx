@@ -6,7 +6,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { Button } from 'antd'
 import ProjectModal from '../Modal/ProjectModal';
 
-const Header = () => {
+const Header = ({ render, setRender }) => {
     const navigate = useNavigate()
     const handleClick = () => {
         localStorage.removeItem('usertoken');
@@ -19,8 +19,8 @@ const Header = () => {
                 <h1 className='font-bold text-xl px-4'>TODOS</h1>
             </div>
             <div className='flex items-center gap-4 h-full px-10'>
-               <ProjectModal/>
-                <Button onClick={handleClick} type="primary" danger><p className='hidden md:block'>Logout</p><p className='block md:hidden'>{<AiOutlineLogout className='md:hidden' />}</p></Button>
+                <ProjectModal render={render} setRender={setRender} />
+                <Button onClick={handleClick} type="primary" danger><p className='hidden md:block'>Logout<AiOutlineLogout className='md:hidden' /></p><p className='block md:hidden'>{<AiOutlineLogout className='md:hidden' />}</p></Button>
             </div>
 
         </div>
