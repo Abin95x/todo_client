@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header/Header'
-import Body from '../../components/Body/Body'
+import ProjectList from '../../components/ProjectList/ProjectList'
 
 
 const Home = () => {
+  const [render,setRender] = useState(true)
   return (
     <div>
-      <Header />
-      <div className='flex'>
-        <Body />
+      <Header render={render} setRender={setRender}/>
+      <div>
+        <ProjectList render={render}/>
       </div>
     </div>
   )
