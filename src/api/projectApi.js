@@ -15,7 +15,8 @@ export  async function editProject(details) {
     return data
 }
 
-export  async function removeProject() {
-    const data = await axiosInstance.post('/project/removeproject')
+export  async function deleteProject(id) {
+    console.log(id);
+    const data = await axiosInstance.put(`/project/deleteproject?projectId=${id}`)
     return data
 }

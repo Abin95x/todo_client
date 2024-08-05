@@ -9,7 +9,7 @@ const Home = () => {
     <div>
       <Header render={render} setRender={setRender}/>
       <div>
-        <ProjectList render={render}/>
+        <ProjectList render={render} setRender={setRender}/>
       </div>
     </div>
   )

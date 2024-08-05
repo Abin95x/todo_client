@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getProjects } from '../../api/projectApi';
-import { List, Typography } from 'antd';
+import { getProjects, deleteProject } from '../../api/projectApi';
+import { List, Typography, Button } from 'antd';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
-const ProjectList = ({ render }) => {
+const ProjectList = ({ render, setRender}) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +23,22 @@ const ProjectList = ({ render }) => {
     getAllProjects();
   }, [render]);
 
+  const handleDelete = async (projectId) => {
+    try {
+      const response = await deleteProject(projectId);
+      console.log(response);
+      if(render){
+        setRender(false)
+      }else if(!render){
+        setRender(true)
+      }
+      toast.error('Project deleted');
+
+    } catch (err) {
+      setError('Failed to delete project');
+    }
+  };
+
   if (loading) {
     return (
       <div className='bg-yellow-200 w-full h-[100vh] flex justify-center items-center'>
@@ -38,15 +56,23 @@ const ProjectList = ({ render }) => {
   }
 
   return (
-    <div className='bg-white w-full h-[100vh] p-10 '>
+    <div className='bg-white w-full h-[100vh] p-10'>
       {projects.length > 0 ? (
-        <List className=' '
+        <List
           header={<div className='font-bold'>Projects</div>}
           bordered
           dataSource={projects}
           renderItem={(item, i) => (
-            <List.Item className='hover:bg-blue-gray-200  '>
-              <Typography.Text >{i + 1} . </Typography.Text> {item.title}
+            <List.Item className='hover:bg-blue-gray-200 flex justify-between'>
+              <div>
+                <Typography.Text>{i + 1}.</Typography.Text> {item.title}
+              </div>
+              <Button
+                type='danger'
+                onClick={() => handleDelete(item._id)}
+              >
+                Delete
+              </Button>
             </List.Item>
           )}
         />
