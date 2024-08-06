@@ -11,7 +11,6 @@ export  async function getProjects() {
 }
 
 export  async function getProjectDetails(id) {
-    console.log(id);
     const data = await axiosInstance.get(`/project/getprojectdetails?projectId=${id}`)
     return data
 }
@@ -22,7 +21,6 @@ export  async function editProject(details) {
 }
 
 export  async function deleteProject(id) {
-    console.log(id);
     const data = await axiosInstance.put(`/project/deleteproject?projectId=${id}`)
     return data
 }

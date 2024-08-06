@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProjectDetails, editProject } from '../../api/projectApi';
-import { updateTodos, addTodo, getTodos } from '../../api/todoApi'
+import { addTodo, getTodos, markTodo, deleteTodos } from '../../api/todoApi'
 import Header from '../../components/Header/Header';
-import { List, Typography, Button, Input, Space } from 'antd';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MdModeEdit } from "react-icons/md";
-
-
-const { Title } = Typography;
+import TodoList from '../../components/TodoList/TodoList';
 
 const ProjectView = () => {
   const { projectId } = useParams();
@@ -32,9 +28,41 @@ const ProjectView = () => {
     } else {
       toast.info('Fill up the fields');
     }
-
-
   }
+
+  const handleMark = async (id) => {
+    try {
+      const currentTodo = todos.find(todo => todo._id === id);
+      const newStatus = currentTodo.status === 'done' ? 'pending' : 'done';
+      await markTodo(id, newStatus);
+      setTodos(todos.map(todo =>
+        todo._id === id ? { ...todo, status: newStatus } : todo
+      ));
+      toast.success(`Todo marked as ${newStatus}`);
+    } catch (error) {
+      toast.error('Failed to mark todo');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteTodos(id);
+      setTodos(todos.filter(todo => todo._id !== id));
+      toast.success('Todo removed successfully');
+    } catch (error) {
+      toast.error('Failed to remove todo');
+    }
+  };
+
+  const sortedTodos = todos.sort((a, b) => {
+    if (a.status === 'done' && b.status === 'pending') {
+      return 1;
+    } else if (a.status === 'pending' && b.status === 'done') {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
 
   useEffect(() => {
     async function getDetails() {
@@ -55,45 +83,17 @@ const ProjectView = () => {
   return (
     <div>
       <Header render={render} setRender={setRender} />
-      <div className='h-[100vh] p-5'>
-        {project && (
-          <>
-            <div className='flex items-center'>
-              <div >
-                <Title level={1}>{project.title}</Title>
-              </div>
-              <div className='h-10 w-10 px-4'>
-                <button>
-                  <MdModeEdit />
-                </button>
-              </div>
-            </div>
-            <Input value={task} onChange={(e) => {
-              setTask(e.target.value)
-            }} placeholder='Task' className='my-3' />
-            <Input value={description} onChange={(e) => {
-              setDescription(e.target.value)
-            }} placeholder='Description' />
-            <Button onClick={handleClick} type="primary" className='my-3' >Add todo</Button>
-
-            <List
-              bordered
-              dataSource={todos}
-              renderItem={(todo, index) => (
-                <List.Item
-                  actions={[
-                    <Button type="link" >Remove</Button>,
-                    <Button type="link" >Update</Button>
-                  ]}
-                >
-                  <h1 className='font-bold text-lg'>{todo.task}</h1>  <span className='text-xs font-thin'>{todo.description}</span>
-
-                </List.Item>
-              )}
-            />
-          </>
-        )}
-      </div>
+      <TodoList
+        project={project}
+        task={task}
+        setTask={setTask}
+        description={description}
+        setDescription={setDescription}
+        handleClick={handleClick}
+        handleMark={handleMark}
+        handleDelete={handleDelete}
+        sortedTodos={sortedTodos}
+      />
     </div>
   );
 };
