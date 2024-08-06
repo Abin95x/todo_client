@@ -15,8 +15,8 @@ export  async function markTodo(id) {
     return data 
 }
 
-export  async function updateTodos(details) {
-    const data = await axiosInstance.patch('/todo/updatetodo', details)
+export  async function updateTodos(id,details) {
+    const data = await axiosInstance.patch(`/todo/updatetodo?todoId=${id}`, details)
     return data
 }
 

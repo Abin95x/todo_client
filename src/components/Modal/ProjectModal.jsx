@@ -30,7 +30,6 @@ const ProjectModal = ({ render, setRender }) => {
       setName('')
       setConfirmLoading(false);
       setOpen(false);
-
       toast.success('Project added successfully');
     }
   };
@@ -42,7 +41,7 @@ const ProjectModal = ({ render, setRender }) => {
 
   return (
     <>
-      <Button type='primary' onClick={showModal} ><p className='hidden md:block'>Add project </p><p className='block md:hidden'>{<IoMdAddCircleOutline className='md:hidden ' />}</p></Button>
+      <Button type='primary' onClick={showModal} className='bg-black'><p className='hidden md:block b'>Add project </p><p className='block md:hidden'>{<IoMdAddCircleOutline className='md:hidden ' />}</p></Button>
 
       <Modal
         title="Title"

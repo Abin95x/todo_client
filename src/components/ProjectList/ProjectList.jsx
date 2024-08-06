@@ -4,6 +4,7 @@ import { List, Typography, Button } from 'antd';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
+import { FaXmark } from "react-icons/fa6";
 
 const ProjectList = ({ render, setRender }) => {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const ProjectList = ({ render, setRender }) => {
               type='danger'
               onClick={(e) => handleDelete(e, item._id)}
             >
-              Delete
+              <FaXmark className='text-red-600'/>
             </Button>
           </List.Item>
         )}

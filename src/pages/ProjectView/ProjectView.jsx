@@ -71,14 +71,11 @@ const ProjectView = () => {
     }
     async function getTodoList(id) {
       const response = await getTodos(id)
-      console.log(response.data.todo);
       setTodos(response.data.todo)
     }
     getDetails();
     getTodoList(projectId)
   }, [projectId]);
-
-  console.log(todos);
 
   return (
     <div>
@@ -93,6 +90,7 @@ const ProjectView = () => {
         handleMark={handleMark}
         handleDelete={handleDelete}
         sortedTodos={sortedTodos}
+        setTodos={setTodos}
       />
     </div>
   );
