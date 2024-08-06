@@ -10,8 +10,14 @@ export  async function getProjects() {
     return data
 }
 
+export  async function getProjectDetails(id) {
+    console.log(id);
+    const data = await axiosInstance.get(`/project/getprojectdetails?projectId=${id}`)
+    return data
+}
+
 export  async function editProject(details) {
-    const data = await axiosInstance.post('/project/editproject', details)
+    const data = await axiosInstance.patch(`/project/editproject?details=${details}`)
     return data
 }
 

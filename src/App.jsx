@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path='/*' element={<UserRoute />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer autoClose={1500} />
     </BrowserRouter>
   )
 }

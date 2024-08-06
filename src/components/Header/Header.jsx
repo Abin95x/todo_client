@@ -16,7 +16,7 @@ const Header = ({ render, setRender }) => {
     return (
         <div className='w-[100%] h-20 bg-blue-100 flex justify-between'>
             <div className='flex items-center h-full '>
-                <h1 className='font-bold text-xl px-4'>TODOS</h1>
+                <h1 className='font-bold text-xl px-4'>TODO</h1>
             </div>
             <div className='flex items-center gap-4 h-full px-10'>
                 <ProjectModal render={render} setRender={setRender} />
