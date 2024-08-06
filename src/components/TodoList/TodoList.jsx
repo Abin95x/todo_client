@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { IoMdCheckmark } from "react-icons/io";
 import { FaXmark } from "react-icons/fa6";
@@ -6,6 +6,7 @@ import { MdModeEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import { List, Typography, Button, Input, Tag } from 'antd';
 import { updateTodos } from '../../api/todoApi';
+import { editProject } from '../../api/projectApi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const { Title } = Typography;
@@ -20,11 +21,15 @@ const TodoList = ({
   handleMark,
   handleDelete,
   sortedTodos,
-  setTodos
+  setTodos,
+  setProject
 }) => {
   const [editTodo, setEditTodo] = useState(null);
   const [editTask, setEditTask] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [isEditingProject, setIsEditingProject] = useState(false);
+  const [newProjectTitle, setNewProjectTitle] = useState('');
+
 
   const handleEdit = (todo) => {
     setEditTodo(todo._id);
@@ -50,11 +55,38 @@ const TodoList = ({
       setEditTodo(null);
       setEditTask('');
       setEditDescription('');
-
       toast.success('Todo updated successfully.');
     } catch (err) {
-      console.error(err);
+      toast.error(err.message);
     }
+  };
+
+  const handleProjectEdit = () => {
+    setIsEditingProject(true);
+    setNewProjectTitle(project.title);
+  };
+
+  const handleProjectSave = async () => {
+    try {
+      if (newProjectTitle.trim() === "") {
+        toast.info('Project title cannot be empty.');
+        return;
+      }
+
+      const response = await editProject(project._id, { title: newProjectTitle });
+      setProject(response.data)
+      setNewProjectTitle('');
+      setIsEditingProject(false);
+
+      toast.success('Project title updated successfully.');
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleProjectCancel = () => {
+    setIsEditingProject(false);
+    setNewProjectTitle('');
   };
 
   return (
@@ -63,12 +95,27 @@ const TodoList = ({
         <>
           <div className='flex items-center'>
             <div className='text-center'>
-              <Title level={1}>{project.title}</Title>
-            </div>
-            <div className='h-10 w-10 mx-5'>
-              <button>
-                <MdModeEdit />
-              </button>
+              {isEditingProject ? (
+                <>
+                  <Input
+                    value={newProjectTitle}
+                    onChange={(e) => setNewProjectTitle(e.target.value)}
+                    placeholder='Project Title'
+                    className='my-3'
+                  />
+                  <div className='flex gap-2'>
+                    <Button onClick={handleProjectSave} type="primary" className='my-3 bg-black w-full md:w-24'>Save</Button>
+                    <Button onClick={handleProjectCancel} type="default" className='my-3 w-full md:w-24'>Cancel</Button>
+                  </div>
+                </>
+              ) : (
+                <div className='flex'>
+                  <Title level={1}>{project.title}</Title>
+                  <Button onClick={handleProjectEdit} className='mt-2 mx-3'>
+                    <MdModeEdit />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
           <Input
@@ -83,7 +130,7 @@ const TodoList = ({
             placeholder='Description'
           />
           <Button onClick={handleClick} type="primary" className='my-3 bg-black w-full md:w-24'>Add todo</Button>
-          <List className=''
+          <List
             bordered
             dataSource={sortedTodos}
             renderItem={(todo) => (
@@ -106,7 +153,6 @@ const TodoList = ({
                         <Button onClick={() => handleSave(todo._id)} type="primary" className='my-3 bg-black w-full md:w-24'>Save</Button>
                         <Button onClick={() => setEditTodo(null)} type="default" className='my-3 w-full md:w-24'>Cancel</Button>
                       </div>
-
                     </>
                   ) : (
                     <>
@@ -149,4 +195,3 @@ const TodoList = ({
 };
 
 export default TodoList;
-

@@ -59,10 +59,10 @@ const ProjectView = () => {
       return 1;
     } else if (a.status === 'pending' && b.status === 'done') {
       return -1;
-    } else {
-      return 0;
     }
+      return new Date(b.createdAt) - new Date(a.createdAt);
   });
+
 
   useEffect(() => {
     async function getDetails() {
@@ -91,6 +91,7 @@ const ProjectView = () => {
         handleDelete={handleDelete}
         sortedTodos={sortedTodos}
         setTodos={setTodos}
+        setProject={setProject}
       />
     </div>
   );
