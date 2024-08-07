@@ -1,8 +1,23 @@
-# React + Vite
+# Todo Frontend
+## Description
+This project is a frontend service for managing todos. It uses React.js and Tailwind css for responsive design.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Technologies Used
+- React.js
+- For design - Tailwind CSS, Material tailwind, Ant design
 
-Currently, two official plugins are available:
+  
+## Running the App
+- To start the application, 
+  use:   `npm run dev`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Contact
+For any inquiries, please contact: abinpv95@gmail.com
+
+## Environment Setup
+Create a .env file and paste the below env variable
+```env
+VITE_BASE_URL = "http://localhost:3000/"
+
+
